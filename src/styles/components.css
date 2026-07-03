@@ -1,0 +1,41 @@
+.navbar {
+    background-color: #fff8f0;
+    display: flex;
+    align-items: center;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.logo-container {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+}
+
+.logo {
+    margin-left: 20px;
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.logo-container h2 {
+    font-size: 30px;
+    margin: 0;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.nav-pages {
+    margin-left: auto;
+    margin-right: 30px;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-pages button {
+    color: #7f7c78;
+    background: none;
+    border: none;
+    font-size: 15px;
+}
