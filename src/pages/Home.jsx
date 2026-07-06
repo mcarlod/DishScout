@@ -1,6 +1,8 @@
 import Navbar from '../components/Navbar'
+import RecipeCard from "../components/RecipeCard.jsx";
 import SearchBar from '../components/SearchBar'
 import '../styles/globals.css'
+import pepperpot from "../assets/Rectangle 5.png"
 
 function Home() {
     function handleSearch(query) {
@@ -22,7 +24,13 @@ function Home() {
                 </section>
 
                 <section>
-                    {/*recipe cards*/}
+                    <RecipeCard
+                        image={pepperpot}
+                        recipeName="Barbados Pepperpot"
+                        country="Guyana"
+                        prepTime={45}
+                        servings={4}
+                    />
                 </section>
             </main>
         </>
