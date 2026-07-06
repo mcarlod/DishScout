@@ -1,3 +1,42 @@
-html {
+body {
+    font-family: 'Inria Serif', serif;
     background-color: #f0e6da;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inria Serif', serif;
+}
+
+h1 {
+    font-size: 48px;
+    margin-bottom: 5px;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+h3 {
+    color: #7f7c78;
+    font-weight: normal;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+main {
+    padding: 20px 40px;
+}
+
+.searchbar {
+    margin-bottom: 40px;
+}
+
+.recipe-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 0 -20px;
 }
