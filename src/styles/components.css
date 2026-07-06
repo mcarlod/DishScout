@@ -4,8 +4,7 @@
     background-color: #fff8f0;
     display: flex;
     align-items: center;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding: 15px 40px;
 }
 
 .logo-container {
@@ -15,13 +14,14 @@
 }
 
 .logo {
-    margin-left: 20px;
-    width: 50px;
-    height: 50px;
+    margin-left: 0;
+    width: 40px;
+    height: 40px;
     object-fit: contain;
 }
 
 .logo-container h2 {
+    font-family: 'Inria Serif', serif;
     font-size: 30px;
     margin: 0;
     font-weight: bold;
@@ -30,26 +30,53 @@
 
 .nav-pages {
     margin-left: auto;
-    margin-right: 30px;
+    margin-right: 0;
     display: flex;
-    gap: 20px;
+    gap: 10px;
+    align-items: center;
 }
 
-.nav-pages button {
+.nav-pages .nav-link, .nav-pages .logout-btn {
     color: #7f7c78;
     background: none;
     border: none;
-    font-size: 15px;
+    font-family: 'Inria Serif', serif;
+    font-size: 18px;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 40px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logout-icon {
+    height: 20px;
+    width: 20px;
+}
+
+.nav-pages .nav-link:hover, .nav-pages .logout-btn:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.nav-pages .nav-link.active {
+    color: #e9ebeb;
+    background: #465e5b;
+    opacity: 1;
 }
 
 /*SearchBar*/
 
 .search-bar {
-    width: 70%;
-    padding: 12px 16px 12px 48px;
-    border: 1px solid #ccc;
+    width: 100%;
+    padding: 15px 20px 15px 50px;
+    border: none;
     border-radius: 40px;
     font-size: 16px;
+    font-family: 'Inria Serif', serif;
+    background-color: white;
 }
 
 .search-icon {
@@ -66,7 +93,7 @@
 
 .search-container {
     position: relative;
-    width: 800px;
+    width: 600px;
 }
 
 /*RecipeCard*/
@@ -102,7 +129,7 @@
 .recipe-card {
     margin: 20px;
     width: 350px;
-    height: 300px;
+    height: 270px;
     background-color: #fff;
     border-radius: 20px;
     overflow: hidden;
@@ -111,6 +138,8 @@
 .recipe-image-wrapper {
     position: relative;
     height: 200px;
+    border-radius: 20px;
+    overflow: hidden;
 }
 
 .recipe-image {
@@ -120,13 +149,15 @@
 }
 
 .recipe-title {
-    margin: 0 0 8px;
-    font-size: 18px;
+    margin: 10px 0 5px;
+    font-size: 20px;
     font-weight: bold;
+    font-family: 'Inria Serif', serif;
 }
 
 .recipe-info {
-    padding: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .recipe-info-text {
