@@ -32,7 +32,8 @@ main {
 
 .login-container {
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
+    background-color: #f0e6da;
 }
 
 .login-banner {
@@ -42,6 +43,7 @@ main {
     flex-direction: column;
     padding: 40px;
     color: white;
+    min-height: 100vh;
 }
 
 .login-banner .logo-container {
@@ -145,6 +147,20 @@ main {
     text-decoration: none;
     font-style: italic;
     font-weight: bold;
+}
+
+.demo-guest-btn {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    background-color: #465e5b;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: 'Inria Serif', serif;
+    cursor: pointer;
 }
 
 .searchbar {
