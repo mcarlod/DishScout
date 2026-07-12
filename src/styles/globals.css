@@ -30,6 +30,123 @@ main {
     padding: 20px 40px;
 }
 
+.login-container {
+    display: flex;
+    height: 100vh;
+}
+
+.login-banner {
+    background-color: #465e5b;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    color: white;
+}
+
+.login-banner .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: 0;
+    margin-bottom: 0;
+}
+
+.login-banner .logo {
+    height: 60px;
+    width: 60px;
+}
+
+.login-banner h2 {
+    color: white;
+    font-size: 32px;
+    margin: 0;
+}
+
+.banner-content {
+    margin-top: auto;
+    margin-bottom: auto;
+    max-width: 500px;
+}
+
+.banner-content h1 {
+    font-size: 56px;
+    line-height: 1.1;
+    margin-bottom: 20px;
+}
+
+.banner-content p {
+    font-size: 24px;
+    color: #a3b1af;
+    line-height: 1.4;
+}
+
+.login-form-container {
+    background-color: #f0e6da;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 100px;
+    position: relative;
+}
+
+.login-form-container h1 {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.login-form-container p {
+    color: #7f7c78;
+    font-size: 18px;
+    margin-bottom: 40px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.form-group input {
+    padding: 15px 20px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    font-size: 16px;
+    font-family: 'Inria Serif', serif;
+}
+
+.sign-in-btn {
+    background-color: #465e5b;
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-family: 'Inria Serif', serif;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.signup-link {
+    text-align: center;
+    margin-top: 20px;
+    color: #7f7c78;
+}
+
+.signup-link a {
+    color: #465e5b;
+    text-decoration: none;
+    font-style: italic;
+    font-weight: bold;
+}
+
 .searchbar {
     margin-bottom: 40px;
 }
