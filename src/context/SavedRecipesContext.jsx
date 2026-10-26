@@ -63,6 +63,7 @@ export function SavedRecipesProvider({ children }) {
 
     const value = {
         ready,
+        savedCount: savedIds.size,
         isSaved: (recipeId) => savedIds.has(recipeId),
         isPending: (recipeId) => pending.has(recipeId),
         toggleSave,
