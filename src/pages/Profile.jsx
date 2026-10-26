@@ -1,8 +1,13 @@
 import photo from '../assets/12.png';
 import calendar from '../assets/Calendar.png';
 import '../styles/globals.css';
+import { useAuth } from '../context/AuthContext';
 
 function Profile() {
+    const { user } = useAuth();
+    const name = user?.user_metadata?.full_name || user?.email;
+    const joined = user ? new Date(user.created_at).toLocaleDateString() : "";
+
     return(
         <>
             <h1>Your Profile</h1>
@@ -14,10 +19,10 @@ function Profile() {
                 <div className="profile-card">
                     <img src={photo} alt="" className="profile-image" />
                     <div className="profile-info">
-                        <h1>Jane Doe</h1>
+                        <h1>{name}</h1>
                         <div className="date-row">
                             <img className="calendar-icon" src={calendar} alt=""/>
-                            <p>Joined on: 01/01/2026</p>
+                            <p>Joined on: {joined}</p>
                         </div>
                     </div>
                 </div>

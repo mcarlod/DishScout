@@ -2,9 +2,17 @@ import { useNavigate, NavLink } from 'react-router-dom';
 import logo from '../assets/DishScoutLogo.png'
 import '../styles/components.css'
 import logout from '../assets/Log out.png'
+import { useAuth } from '../context/AuthContext'
 
 function Navbar() {
     const navigate = useNavigate();
+    const { signOut } = useAuth();
+
+    const handleLogout = async () => {
+        await signOut();
+        navigate("/");
+    };
+
     return (
         <nav className = "navbar">
             <div className="logo-container">
@@ -16,7 +24,7 @@ function Navbar() {
                 <NavLink to="/home" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>Recipes</NavLink>
                 <NavLink to="/saved" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>Saved</NavLink>
                 <NavLink to="/profile" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>Profile</NavLink>
-                <button className="logout-btn" onClick={() => navigate("/")}>
+                <button className="logout-btn" onClick={handleLogout}>
                     <img src={logout} alt="Log out" className="logout-icon"/>
                 </button>
             </div>

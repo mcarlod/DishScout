@@ -136,6 +136,29 @@ main {
     margin-top: 10px;
 }
 
+.sign-in-btn:disabled {
+    opacity: 0.7;
+    cursor: default;
+}
+
+.auth-error,
+.auth-message {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.auth-error {
+    background-color: #fdecea;
+    color: #a12b1f;
+}
+
+.auth-message {
+    background-color: #e8f0ef;
+    color: #465e5b;
+}
+
 .signup-link {
     text-align: center;
     margin-top: 20px;
