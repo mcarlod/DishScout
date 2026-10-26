@@ -4,7 +4,9 @@
     background-color: var(--color-nav-bg);
     display: flex;
     align-items: center;
-    padding: 15px var(--page-gutter);
+    /* Lines up with the centred page content */
+    padding: 15px var(--page-inline);
+    border-bottom: 1px solid var(--color-sand);
     /* Anchors the mobile dropdown and keeps it above page content */
     position: relative;
     z-index: 50;
@@ -24,10 +26,10 @@
 }
 
 .logo-container h2 {
-    font-family: 'Inria Serif', serif;
-    font-size: 30px;
+    font-family: var(--font-display);
+    font-size: 28px;
     margin: 0;
-    font-weight: bold;
+    font-weight: 600;
     line-height: 1;
 }
 
@@ -40,11 +42,12 @@
 }
 
 .nav-pages .nav-link, .nav-pages .logout-btn {
-    color: #7f7c78;
+    color: var(--color-muted);
     background: none;
     border: none;
-    font-family: 'Inria Serif', serif;
-    font-size: 18px;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: 500;
     text-decoration: none;
     padding: 10px 20px;
     border-radius: 40px;
@@ -89,7 +92,7 @@
 /* Mobile navigation: logo + menu button, links in a dropdown */
 @media (max-width: 768px) {
     .navbar {
-        padding: 10px var(--page-gutter);
+        padding: 10px var(--page-inline);
     }
 
     .navbar .logo {
@@ -144,7 +147,7 @@
         margin: 0;
         background: var(--color-nav-bg);
         border-radius: 16px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        box-shadow: var(--shadow-lg);
     }
 
     .nav-pages.open {
@@ -163,7 +166,7 @@
     }
 
     .nav-pages .logout-btn {
-        border-top: 1px solid #f0e6da;
+        border-top: 1px solid var(--color-sand);
         border-radius: 0 0 12px 12px;
         margin-top: 4px;
     }
@@ -181,8 +184,8 @@
     border: none;
     border-radius: 40px;
     font-size: 16px;
-    font-family: 'Inria Serif', serif;
-    background-color: white;
+    font-family: var(--font-body);
+    background-color: var(--color-surface);
 }
 
 .search-icon {
@@ -218,14 +221,14 @@
     border: none;
     border-radius: 50%;
     background: none;
-    color: #7f7c78;
+    color: var(--color-muted);
     font-size: 24px;
     line-height: 1;
     cursor: pointer;
 }
 
 .search-clear:hover {
-    background: #f0e6da;
+    background: var(--color-cream);
 }
 
 /*Made button (recipe details)*/
@@ -241,18 +244,18 @@
 .made-button {
     min-height: 44px;
     padding: 12px 30px;
-    border: 2px solid #465e5b;
+    border: 2px solid var(--color-forest);
     border-radius: 40px;
-    background-color: #465e5b;
-    color: white;
+    background-color: var(--color-forest);
+    color: var(--color-on-brand);
     font-size: 16px;
-    font-family: 'Inria Serif', serif;
+    font-family: var(--font-body);
     cursor: pointer;
 }
 
 .made-button.made {
-    background-color: #fff;
-    color: #465e5b;
+    background-color: var(--color-surface);
+    color: var(--color-forest);
     font-weight: bold;
 }
 
@@ -267,9 +270,9 @@
     background: none;
     border: none;
     padding: 0 10px;
-    color: #465e5b;
+    color: var(--color-forest);
     font-size: 16px;
-    font-family: 'Inria Serif', serif;
+    font-family: var(--font-body);
     text-decoration: underline;
     cursor: pointer;
 }
@@ -277,8 +280,8 @@
 .made-error {
     padding: 6px 10px;
     border-radius: 8px;
-    background: #fdecea;
-    color: #a12b1f;
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
     font-size: 14px;
 }
 
@@ -300,10 +303,10 @@
     padding: 12px 46px 12px 20px;
     border: none;
     border-radius: 40px;
-    background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23465e5b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 18px center / 16px;
+    background: var(--color-surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232F4F4A' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 18px center / 16px;
     font-size: 16px;
-    font-family: 'Inria Serif', serif;
-    color: #000;
+    font-family: var(--font-body);
+    color: var(--color-ink);
     cursor: pointer;
 }
 
@@ -316,9 +319,9 @@
     background: none;
     border: none;
     padding: 12px 10px;
-    color: #465e5b;
+    color: var(--color-forest);
     font-size: 16px;
-    font-family: 'Inria Serif', serif;
+    font-family: var(--font-body);
     font-weight: bold;
     text-decoration: underline;
     cursor: pointer;
@@ -342,7 +345,7 @@
 
     border: none;
     border-radius: 50%;
-    background: #ffffff;
+    background: var(--color-surface);
 
     display: flex;
     justify-content: center;
@@ -372,7 +375,7 @@
 }
 
 .save-button:focus-visible {
-    outline: 2px solid #465e5b;
+    outline: 2px solid var(--color-forest);
     outline-offset: 2px;
 }
 
@@ -380,7 +383,7 @@
     height: 25px;
     width: 25px;
     fill: none;
-    stroke: #000;
+    stroke: var(--color-ink);
     stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -388,8 +391,8 @@
 }
 
 .save-button.saved .heart-icon {
-    fill: #e53935;
-    stroke: #e53935;
+    fill: var(--color-heart);
+    stroke: var(--color-heart);
 }
 
 .save-error {
@@ -400,8 +403,8 @@
     max-width: 180px;
     padding: 6px 10px;
     border-radius: 8px;
-    background: #fdecea;
-    color: #a12b1f;
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
     font-size: 13px;
 }
 
@@ -413,8 +416,9 @@
     min-height: 270px;
     display: flex;
     flex-direction: column;
-    background-color: #fff;
+    background-color: var(--color-surface);
     border-radius: 20px;
+    box-shadow: var(--shadow-sm);
     overflow: hidden;
 }
 
@@ -436,8 +440,9 @@
     margin: 10px 0 5px;
     font-size: 20px;
     line-height: 1.25;
-    font-weight: bold;
-    font-family: 'Inria Serif', serif;
+    font-weight: 600;
+    font-family: var(--font-display);
+    color: var(--color-ink);
     /* Long names stop at two lines with "…"; the full name is on the details page */
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -469,7 +474,7 @@
 }
 
 .recipe-card:has(.recipe-card-link:focus-visible) {
-    outline: 2px solid #465e5b;
+    outline: 2px solid var(--color-forest);
     outline-offset: 2px;
 }
 
@@ -486,7 +491,7 @@
 
     font-size: 14px;
     font-weight: bold;
-    color: #7f7f7f;
+    color: var(--color-muted);
 }
 
 .recipe-info-text span {
