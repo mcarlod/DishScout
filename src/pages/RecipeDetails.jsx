@@ -16,7 +16,12 @@ function RecipeDetails() {
     useEffect(() => {
         let ignore = false;
 
-        getRecipeById(recipeId)
+        // A malformed link like /recipes/abc is simply "not found", not a database error
+        const request = Number.isInteger(recipeId) && recipeId > 0
+            ? getRecipeById(recipeId)
+            : Promise.resolve(null);
+
+        request
             .then((result) => {
                 if (!ignore) setRecipe(result);
             })

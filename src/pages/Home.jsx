@@ -4,10 +4,16 @@ import SearchBar from '../components/SearchBar'
 import RecipeFilters from "../components/RecipeFilters.jsx";
 import '../styles/globals.css'
 import { getRecipes, parseListString } from "../services/recipeService.js";
+import { getProfile } from "../services/profileService.js";
+import { useAuth } from "../context/AuthContext";
 
 const NO_FILTERS = { search: "", cuisine: "", tag: "" };
 
 function Home() {
+    const { user } = useAuth();
+    // undefined while loading, so an old sign-up name doesn't flash before the profile arrives
+    const [profileName, setProfileName] = useState(undefined);
+
     const [recipes, setRecipes] = useState([]);
     const [page, setPage] = useState(0);
     const [hasMore, setHasMore] = useState(false);
@@ -42,6 +48,24 @@ function Home() {
             ignore = true;
         };
     }, [page, attempt, filters]);
+
+    // Fetched each time Home opens, so a name edited on the Profile page shows up straight away
+    useEffect(() => {
+        let ignore = false;
+
+        getProfile()
+            .then((profile) => {
+                if (!ignore) setProfileName(profile?.name?.trim() || null);
+            })
+            .catch((err) => {
+                console.error("Couldn't load profile name:", err);
+                if (!ignore) setProfileName(null);
+            });
+
+        return () => {
+            ignore = true;
+        };
+    }, []);
 
     // Search as the user types, waiting until they pause for 300ms
     useEffect(() => {
@@ -85,12 +109,18 @@ function Home() {
         applyFilters(NO_FILTERS);
     }
 
+    // Profile name, then the name given at sign-up, then a generic greeting
+    const displayName = profileName === undefined
+        ? ""
+        : profileName || user?.user_metadata?.full_name?.trim() || "";
+    const greeting = profileName === undefined ? "Hello" : displayName ? `Hello, ${displayName}` : "Hello there";
+
     const isFiltering = Boolean(filters.search || filters.cuisine || filters.tag);
     const canClear = isFiltering || query !== "";
 
     return(
         <>
-            <h1>Hello, Jane</h1>
+            <h1>{greeting}</h1>
             <h3>What will you cook today?</h3>
 
             <section className="searchbar">
