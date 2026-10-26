@@ -1,13 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import RecipeCard from "../components/RecipeCard.jsx";
-import SearchBar from '../components/SearchBar'
 import RecipeFilters from "../components/RecipeFilters.jsx";
+import HomeHero from "../components/HomeHero.jsx";
+import MoodTiles from "../components/MoodTiles.jsx";
 import '../styles/globals.css'
 import { getRecipes, parseListString } from "../services/recipeService.js";
 import { getProfile } from "../services/profileService.js";
 import { useAuth } from "../context/AuthContext";
 
 const NO_FILTERS = { search: "", cuisine: "", tag: "" };
+const SKELETON_CARDS = 6;
+
+function timeOfDayGreeting() {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning";
+    if (hour < 18) return "Good afternoon";
+    return "Good evening";
+}
 
 function Home() {
     const { user } = useAuth();
@@ -26,6 +35,10 @@ function Home() {
     const [query, setQuery] = useState("");
     const [filters, setFilters] = useState(NO_FILTERS);
 
+    // Hero collage photos, taken once from the first unfiltered page so they don't change while searching
+    const [collage, setCollage] = useState([]);
+    const resultsRef = useRef(null);
+
     // Re-runs on first load, each "Load more", a retry, or when search/filters change
     useEffect(() => {
         let ignore = false;
@@ -36,6 +49,9 @@ function Home() {
                 setRecipes((prev) => (page === 0 ? result.recipes : [...prev, ...result.recipes]));
                 setHasMore(result.hasMore);
                 setTotal(result.totalCount);
+                if (page === 0 && !filters.search && !filters.cuisine && !filters.tag) {
+                    setCollage((prev) => (prev.length ? prev : result.recipes.map((r) => r.image).filter(Boolean).slice(0, 3)));
+                }
             })
             .catch((err) => {
                 if (!ignore) setError(err.message || "Something went wrong.");
@@ -109,77 +125,108 @@ function Home() {
         applyFilters(NO_FILTERS);
     }
 
-    // Profile name, then the name given at sign-up, then a generic greeting
+    // Tapping the active quick-filter chip turns it off again
+    function toggleTag(tag) {
+        applyFilters({ tag: filters.tag === tag ? "" : tag });
+    }
+
+    // Mood tiles apply a filter, then bring the results into view
+    function pickMood(filter) {
+        applyFilters(filter);
+        resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    // Profile name, then the name given at sign-up; nothing while the profile is still loading
     const displayName = profileName === undefined
         ? ""
         : profileName || user?.user_metadata?.full_name?.trim() || "";
-    const greeting = profileName === undefined ? "Hello" : displayName ? `Hello, ${displayName}` : "Hello there";
+    const greeting = displayName ? `${timeOfDayGreeting()}, ${displayName}` : timeOfDayGreeting();
 
     const isFiltering = Boolean(filters.search || filters.cuisine || filters.tag);
     const canClear = isFiltering || query !== "";
+    const showSkeletons = loading && recipes.length === 0;
 
     return(
         <>
-            <h1>{greeting}</h1>
-            <h3>What will you cook today?</h3>
+            <HomeHero
+                greeting={greeting}
+                query={query}
+                onQueryChange={setQuery}
+                onSearch={handleSearch}
+                activeTag={filters.tag}
+                onTagToggle={toggleTag}
+                collage={collage}
+            />
 
-            <section className="searchbar">
-                <SearchBar value={query} onChange={setQuery} onSearch={handleSearch}/>
-                <RecipeFilters
-                    cuisine={filters.cuisine}
-                    tag={filters.tag}
-                    onChange={applyFilters}
-                    onClear={clearAll}
-                    canClear={canClear}
-                />
-            </section>
+            {!isFiltering && <MoodTiles onPick={pickMood} />}
 
-            <h2>
-                {isFiltering
-                    ? (total != null && !loading ? `${total} ${total === 1 ? "recipe" : "recipes"} found` : "Searching…")
-                    : "All Recipes"}
-            </h2>
-
-            <section className="recipe-cards">
-                {recipes.map((recipe) => (
-                    <RecipeCard
-                        key={recipe.id}
-                        recipeId={recipe.id}
-                        image={recipe.image}
-                        recipeName={recipe.recipe_name}
-                        country={parseListString(recipe.cuisine).join(", ")}
-                        prepTime={recipe.prep_time_minutes}
-                        servings={recipe.servings}
+            <section className="results-section" ref={resultsRef} aria-labelledby="results-title">
+                <div className="results-header">
+                    <h2 id="results-title">{isFiltering ? "Search results" : "All recipes"}</h2>
+                    <span className="count-badge" aria-live="polite">
+                        {total != null && !loading
+                            ? `${total.toLocaleString()} ${total === 1 ? "recipe" : "recipes"}`
+                            : "…"}
+                    </span>
+                    <RecipeFilters
+                        cuisine={filters.cuisine}
+                        tag={filters.tag}
+                        onChange={applyFilters}
+                        onClear={clearAll}
+                        canClear={canClear}
                     />
-                ))}
+                </div>
+
+                <div className="recipe-cards" aria-busy={loading}>
+                    {showSkeletons && Array.from({ length: SKELETON_CARDS }, (_, i) => (
+                        <div key={`skeleton-${i}`} className="recipe-card recipe-card-skeleton" aria-hidden="true">
+                            <div className="recipe-image-wrapper" />
+                            <div className="recipe-info">
+                                <span className="skeleton-line" />
+                                <span className="skeleton-line short" />
+                            </div>
+                        </div>
+                    ))}
+                    {recipes.map((recipe) => (
+                        <RecipeCard
+                            key={recipe.id}
+                            recipeId={recipe.id}
+                            image={recipe.image}
+                            recipeName={recipe.recipe_name}
+                            country={parseListString(recipe.cuisine).join(", ")}
+                            prepTime={recipe.prep_time_minutes}
+                            servings={recipe.servings}
+                        />
+                    ))}
+                </div>
+
+                <div className="recipes-status">
+                    {error && (
+                        <>
+                            <p>Couldn't load recipes: {error}</p>
+                            <button className="recipes-button" onClick={retry}>Try again</button>
+                        </>
+                    )}
+
+                    {!loading && !error && recipes.length === 0 && (
+                        <div className="empty-state">
+                            <h2>No recipes found</h2>
+                            {isFiltering && (
+                                <>
+                                    <p>Try a different search or clear your filters.</p>
+                                    <button className="recipes-button" onClick={clearAll}>Clear search & filters</button>
+                                </>
+                            )}
+                        </div>
+                    )}
+
+                    {!error && recipes.length > 0 && (hasMore || loading) && (
+                        <button className="recipes-button" onClick={loadMore} disabled={loading}>
+                            {loading ? "Loading…" : "Show more recipes"}
+                        </button>
+                    )}
+                </div>
             </section>
-
-            <div className="recipes-status">
-                {loading && <p>Loading recipes…</p>}
-
-                {error && (
-                    <>
-                        <p>Couldn't load recipes: {error}</p>
-                        <button className="recipes-button" onClick={retry}>Try again</button>
-                    </>
-                )}
-
-                {!loading && !error && recipes.length === 0 && (
-                    <>
-                        <p>No recipes found.</p>
-                        {isFiltering && (
-                            <>
-                                <p>Try a different search or clear your filters.</p>
-                                <button className="recipes-button" onClick={clearAll}>Clear search & filters</button>
-                            </>
-                        )}
-                    </>
-                )}
-
-                {!loading && !error && hasMore && (
-                    <button className="recipes-button" onClick={loadMore}>Load more</button>
-                )}
-            </div>
         </>
     );
 }

@@ -8,6 +8,9 @@
     --color-sage: #E4ECE8;
     --color-paprika: #D9653B;        /* large display text and decoration only */
     --color-paprika-deep: #B4491F;   /* small text and buttons (passes AA on white and cream) */
+    --color-paprika-hover: #9C3D18;
+    --color-peach: #F6D6C6;
+    --color-peach-ink: #7A2E12;
     --color-saffron: #F2B441;
     --color-cream: #FAF6F0;
     --color-sand: #EADFD2;           /* dividers and decorative borders */

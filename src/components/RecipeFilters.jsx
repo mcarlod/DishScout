@@ -26,7 +26,7 @@ function RecipeFilters({ cuisine, tag, onChange, onClear, canClear }) {
 
             {canClear && (
                 <button type="button" className="clear-filters-btn" onClick={onClear}>
-                    Clear search & filters
+                    Clear filters
                 </button>
             )}
         </div>
