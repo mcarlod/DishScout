@@ -127,6 +127,7 @@
 }
 
 .recipe-card {
+    position: relative;
     margin: 20px;
     width: 350px;
     height: 270px;
@@ -153,6 +154,32 @@
     font-size: 20px;
     font-weight: bold;
     font-family: 'Inria Serif', serif;
+}
+
+.recipe-card-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Makes the whole card clickable without nesting the heart button inside a link */
+.recipe-card-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.recipe-card:hover .recipe-title {
+    text-decoration: underline;
+}
+
+.recipe-card-link:focus-visible {
+    outline: none;
+}
+
+.recipe-card:has(.recipe-card-link:focus-visible) {
+    outline: 2px solid #465e5b;
+    outline-offset: 2px;
 }
 
 .recipe-info {

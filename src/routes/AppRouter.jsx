@@ -23,7 +23,7 @@ export default function AppRouter() {
                     <Route element={<ProtectedRoute />}>
                         <Route element={<Layout />}>
                             <Route path="/home" element={<Home />} />
-                            <Route path="/recipe/:id" element={<RecipeDetails />} />
+                            <Route path="/recipes/:id" element={<RecipeDetails />} />
                             <Route path="/saved" element={<Saved />} />
                             <Route path="/profile" element={<Profile />} />
                         </Route>

@@ -265,3 +265,136 @@ main {
     height: 300px;
     border-radius: 40px;
 }
+.recipes-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin: 30px 0;
+    color: #7f7c78;
+    font-size: 18px;
+}
+
+.recipes-status p {
+    margin: 0;
+}
+
+.recipes-button {
+    background-color: #465e5b;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 40px;
+    font-size: 16px;
+    font-family: 'Inria Serif', serif;
+    cursor: pointer;
+}
+
+.recipes-button:hover {
+    opacity: 0.85;
+}
+
+/*Recipe Details*/
+
+.recipe-details {
+    max-width: 1100px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #465e5b;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.recipe-details-image-wrapper {
+    position: relative;
+    height: 420px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.recipe-details h1 {
+    margin-top: 25px;
+    line-height: 1.1;
+}
+
+.recipe-details-meta {
+    font-size: 16px;
+    flex-wrap: wrap;
+}
+
+.recipe-tags {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.recipe-tags li {
+    background: #465e5b;
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 40px;
+    font-size: 14px;
+}
+
+.recipe-details-sections {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.recipe-details-panel {
+    background: #fff;
+    border-radius: 20px;
+    padding: 25px 30px;
+}
+
+.recipe-details-panel h2 {
+    margin-top: 0;
+}
+
+.ingredient-list,
+.step-list {
+    margin: 0;
+    padding-left: 22px;
+    line-height: 1.5;
+    font-size: 17px;
+}
+
+.ingredient-list li + li,
+.step-list li + li {
+    margin-top: 10px;
+}
+
+.step-list li::marker {
+    color: #465e5b;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .recipe-details-image-wrapper {
+        height: 240px;
+    }
+
+    .recipe-details h1 {
+        font-size: 32px;
+    }
+
+    .recipe-details-sections {
+        grid-template-columns: 1fr;
+    }
+
+    .recipe-details-panel {
+        padding: 20px;
+    }
+}
