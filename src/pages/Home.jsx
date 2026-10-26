@@ -5,8 +5,8 @@ import HomeHero from "../components/HomeHero.jsx";
 import MoodTiles from "../components/MoodTiles.jsx";
 import '../styles/globals.css'
 import { getRecipes, parseListString } from "../services/recipeService.js";
-import { getProfile } from "../services/profileService.js";
 import { useAuth } from "../context/AuthContext";
+import { useProfile } from "../context/ProfileContext";
 
 const NO_FILTERS = { search: "", cuisine: "", tag: "" };
 const SKELETON_CARDS = 6;
@@ -20,8 +20,8 @@ function timeOfDayGreeting() {
 
 function Home() {
     const { user } = useAuth();
-    // undefined while loading, so an old sign-up name doesn't flash before the profile arrives
-    const [profileName, setProfileName] = useState(undefined);
+    // Shared profile, already loaded at sign-in, so the greeting has the name on first render
+    const { ready: profileReady, profile } = useProfile();
 
     const [recipes, setRecipes] = useState([]);
     const [page, setPage] = useState(0);
@@ -64,24 +64,6 @@ function Home() {
             ignore = true;
         };
     }, [page, attempt, filters]);
-
-    // Fetched each time Home opens, so a name edited on the Profile page shows up straight away
-    useEffect(() => {
-        let ignore = false;
-
-        getProfile()
-            .then((profile) => {
-                if (!ignore) setProfileName(profile?.name?.trim() || null);
-            })
-            .catch((err) => {
-                console.error("Couldn't load profile name:", err);
-                if (!ignore) setProfileName(null);
-            });
-
-        return () => {
-            ignore = true;
-        };
-    }, []);
 
     // Search as the user types, waiting until they pause for 300ms
     useEffect(() => {
@@ -137,9 +119,9 @@ function Home() {
     }
 
     // Profile name, then the name given at sign-up; nothing while the profile is still loading
-    const displayName = profileName === undefined
-        ? ""
-        : profileName || user?.user_metadata?.full_name?.trim() || "";
+    const displayName = profileReady
+        ? profile?.name?.trim() || user?.user_metadata?.full_name?.trim() || ""
+        : "";
     const greeting = displayName ? `${timeOfDayGreeting()}, ${displayName}` : timeOfDayGreeting();
 
     const isFiltering = Boolean(filters.search || filters.cuisine || filters.tag);

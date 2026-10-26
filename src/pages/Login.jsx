@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "../assets/DishScoutLogo.png";
 import { useAuth } from "../context/AuthContext";
 import '../styles/globals.css'
 
 function Login() {
     const { signIn } = useAuth();
-    const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -17,12 +16,12 @@ function Login() {
         setError("");
         setSubmitting(true);
         const { error } = await signIn(email, password);
-        setSubmitting(false);
         if (error) {
+            setSubmitting(false);
             setError(error.message);
-            return;
         }
-        navigate("/home");
+        // On success the button keeps saying "Signing in…" while the profile loads;
+        // PublicOnlyRoute then moves on to Home with the name already in place
     };
 
     return (
@@ -33,7 +32,7 @@ function Login() {
                     <h2>DishScout</h2>
                 </div>
                 <div className="banner-content">
-                    <h1>Explore flavors from across the world.</h1>
+                    <p className="banner-title">Explore flavors from across the world.</p>
                     <p>Discover, save, and cook recipes all in one place</p>
                 </div>
             </div>
@@ -43,9 +42,11 @@ function Login() {
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label>Email</label>
+                        <label htmlFor="login-email">Email</label>
                         <input
+                            id="login-email"
                             type="email"
+                            autoComplete="email"
                             placeholder="Janedoe@example.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
@@ -53,16 +54,18 @@ function Login() {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Password</label>
+                        <label htmlFor="login-password">Password</label>
                         <input
+                            id="login-password"
                             type="password"
+                            autoComplete="current-password"
                             placeholder="********"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
                     </div>
-                    {error && <div className="auth-error">{error}</div>}
+                    {error && <div className="auth-error" role="alert">{error}</div>}
                     <button type="submit" className="sign-in-btn" disabled={submitting}>
                         {submitting ? "Signing in..." : "Sign in"}
                     </button>

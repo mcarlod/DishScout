@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "../assets/DishScoutLogo.png";
 import { useAuth } from "../context/AuthContext";
 import '../styles/globals.css'
 
 function Signup() {
     const { signUp } = useAuth();
-    const navigate = useNavigate();
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -20,17 +19,18 @@ function Signup() {
         setMessage("");
         setSubmitting(true);
         const { data, error } = await signUp(email, password, fullName);
-        setSubmitting(false);
         if (error) {
+            setSubmitting(false);
             setError(error.message);
             return;
         }
         // With email confirmation enabled, Supabase returns no session until the link is clicked
         if (!data.session) {
+            setSubmitting(false);
             setMessage("Check your email to confirm your account, then sign in.");
-            return;
         }
-        navigate("/home");
+        // With a session, the button keeps saying "Creating account…" while the profile loads;
+        // PublicOnlyRoute then moves on to Home with the name already in place
     };
 
     return (
@@ -41,7 +41,7 @@ function Signup() {
                     <h2>DishScout</h2>
                 </div>
                 <div className="banner-content">
-                    <h1>Explore flavors from across the world.</h1>
+                    <p className="banner-title">Explore flavors from across the world.</p>
                     <p>Discover, save, and cook recipes all in one place</p>
                 </div>
             </div>
@@ -51,9 +51,11 @@ function Signup() {
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label>Full Name</label>
+                        <label htmlFor="signup-name">Full Name</label>
                         <input
+                            id="signup-name"
                             type="text"
+                            autoComplete="name"
                             placeholder="Jane Doe"
                             value={fullName}
                             onChange={(e) => setFullName(e.target.value)}
@@ -61,9 +63,11 @@ function Signup() {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Email</label>
+                        <label htmlFor="signup-email">Email</label>
                         <input
+                            id="signup-email"
                             type="email"
+                            autoComplete="email"
                             placeholder="Janedoe@example.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
@@ -71,9 +75,11 @@ function Signup() {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Password</label>
+                        <label htmlFor="signup-password">Password</label>
                         <input
+                            id="signup-password"
                             type="password"
+                            autoComplete="new-password"
                             placeholder="********"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
@@ -81,8 +87,8 @@ function Signup() {
                             required
                         />
                     </div>
-                    {error && <div className="auth-error">{error}</div>}
-                    {message && <div className="auth-message">{message}</div>}
+                    {error && <div className="auth-error" role="alert">{error}</div>}
+                    {message && <div className="auth-message" role="status">{message}</div>}
                     <button type="submit" className="sign-in-btn" disabled={submitting}>
                         {submitting ? "Creating account..." : "Create account"}
                     </button>

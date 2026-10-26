@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import '../styles/globals.css';
 import { useAuth } from '../context/AuthContext';
 import { useSavedRecipes } from '../context/SavedRecipesContext';
+import { useProfile } from '../context/ProfileContext';
 import RecipeCard from '../components/RecipeCard.jsx';
 import { getMadeRecipes } from '../services/madeRecipeService.js';
 import { parseListString } from '../services/recipeService.js';
 import {
     NAME_MAX_LENGTH,
     getAvatarUrl,
-    getProfile,
     removeAvatar,
     updateDisplayName,
     uploadAvatar,
@@ -22,8 +22,13 @@ function Profile() {
         ? new Date(user.created_at).toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" })
         : "";
 
-    const [profile, setProfile] = useState(null);
-    const [profileError, setProfileError] = useState("");
+    // Shared profile (loaded once per user), so the name and photo show instantly
+    const { ready: profileReady, profile, error: profileLoadError, setProfile } = useProfile();
+    const profileError = !profileReady
+        ? ""
+        : profileLoadError
+            ? "Couldn't load your profile."
+            : profile ? "" : "Your profile record wasn't found.";
 
     const [editingName, setEditingName] = useState(false);
     const [nameDraft, setNameDraft] = useState("");
@@ -38,17 +43,6 @@ function Profile() {
 
     useEffect(() => {
         let ignore = false;
-
-        getProfile()
-            .then((result) => {
-                if (ignore) return;
-                setProfile(result);
-                if (!result) setProfileError("Your profile record wasn't found.");
-            })
-            .catch((err) => {
-                console.error(err);
-                if (!ignore) setProfileError("Couldn't load your profile.");
-            });
 
         getMadeRecipes()
             .then((result) => {

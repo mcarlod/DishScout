@@ -9,10 +9,14 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         // Restore any existing session (Supabase stores it in localStorage)
-        supabase.auth.getSession().then(({ data }) => {
-            setSession(data.session);
-            setLoading(false);
-        });
+        supabase.auth.getSession()
+            .then(({ data }) => setSession(data.session))
+            .catch((err) => {
+                // If the stored session can't be read, continue as signed out instead of a blank screen
+                console.error("Couldn't restore session:", err);
+                setSession(null);
+            })
+            .finally(() => setLoading(false));
 
         // Keep session in sync on sign in, sign out, and token refresh
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {

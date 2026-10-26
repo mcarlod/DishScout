@@ -111,10 +111,16 @@ main {
     max-width: 500px;
 }
 
-.banner-content h1 {
+/* Banner headline: a paragraph styled like a heading, so each page keeps a single h1 */
+.banner-content .banner-title {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 600;
+    letter-spacing: -0.015em;
     /* 56px on large screens, scaling down so narrower split layouts aren't cramped */
     font-size: clamp(36px, 3.9vw, 56px);
     line-height: 1.1;
+    margin-top: 0.67em;
     margin-bottom: 20px;
     color: var(--color-on-brand);
 }
@@ -228,7 +234,7 @@ main {
         margin: 24px 0 0;
     }
 
-    .banner-content h1 {
+    .banner-content .banner-title {
         font-size: clamp(28px, 8vw, 40px);
         margin: 0 0 8px;
     }

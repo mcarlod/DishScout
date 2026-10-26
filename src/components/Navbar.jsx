@@ -18,6 +18,14 @@ function Navbar() {
     const [openOn, setOpenOn] = useState(null);
     const menuOpen = openOn === location.pathname;
     const closeMenu = () => setOpenOn(null);
+    const [logoutError, setLogoutError] = useState("");
+
+    // A logout error message disappears by itself after a few seconds
+    useEffect(() => {
+        if (!logoutError) return;
+        const timer = setTimeout(() => setLogoutError(""), 6000);
+        return () => clearTimeout(timer);
+    }, [logoutError]);
 
     // While the mobile menu is open, close it on a click outside the navbar or on Escape
     useEffect(() => {
@@ -43,7 +51,14 @@ function Navbar() {
 
     const handleLogout = async () => {
         closeMenu();
-        await signOut();
+        setLogoutError("");
+        const { error } = await signOut();
+        if (error) {
+            // Still signed in (e.g. offline): say so instead of silently bouncing back
+            console.error("Couldn't log out:", error);
+            setLogoutError("Couldn't log out. Check your connection and try again.");
+            return;
+        }
         navigate("/");
     };
 
@@ -82,6 +97,7 @@ function Navbar() {
                 </button>
             </div>
 
+            {logoutError && <p className="nav-error" role="alert">{logoutError}</p>}
         </nav>
     )
 }
