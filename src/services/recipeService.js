@@ -67,14 +67,44 @@ export async function getRecipeById(id) {
     return data;
 }
 
-// Fetch one page of recipes (page starts at 0)
-export async function getRecipes({ page = 0, pageSize = RECIPES_PAGE_SIZE } = {}) {
+// Every cuisine and tag currently in the recipes table, for the filter dropdowns.
+// Update these if new values are added to the data.
+export const CUISINE_OPTIONS = [
+    "American", "Argentinian", "Asian", "Brazilian", "Chinese", "Cuban", "Czech", "Greek",
+    "Hawaiian", "Hungarian", "Indian", "Italian", "Japanese", "Latin", "Mediterranean",
+    "Mexican", "Tex Mex",
+];
+
+export const TAG_OPTIONS = [
+    "Air Fryer Recipes", "Dairy Free", "Freezer Meals", "Gluten Free", "Keto Recipes",
+    "Kid Friendly", "Low Carb", "Meal Prep Recipes", "Paleo", "Pressure Cooker Recipes",
+    "Slow Cooker Recipes", "Under 30 Minutes", "Vegetarian Meals", "Whole 30 Recipes",
+];
+
+// Stop characters the user types (%, _, \) from acting as LIKE wildcards
+function escapeLike(text) {
+    return text.replace(/[\\%_]/g, (char) => `\\${char}`).replace(/\*/g, "");
+}
+
+// Fetch one page of recipes (page starts at 0), filtered on the server
+export async function getRecipes({ page = 0, pageSize = RECIPES_PAGE_SIZE, search = "", cuisine = "", tag = "" } = {}) {
     const from = page * pageSize;
     const to = from + pageSize - 1;
 
-    const { data, error, count } = await supabase
+    let query = supabase
         .from("recipes")
-        .select(CARD_COLUMNS, { count: "exact" })
+        .select(CARD_COLUMNS, { count: "exact" });
+
+    const term = search.trim();
+    if (term) query = query.ilike("recipe_name", `%${escapeLike(term)}%`);
+
+    // cuisine looks like "['American', 'Mexican']", so match the quoted name exactly
+    if (cuisine) query = query.ilike("cuisine", `%'${cuisine}'%`);
+
+    // tags looks like "Dairy Free, Kid Friendly"
+    if (tag) query = query.ilike("tags", `%${tag}%`);
+
+    const { data, error, count } = await query
         .order("id", { ascending: true })
         .range(from, to);
 

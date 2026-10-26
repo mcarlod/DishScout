@@ -1,25 +1,37 @@
-import React, { useState } from "react";
 import "../styles/components.css";
 import searchIcon from "../assets/Search.png";
 
-function SearchBar({ onSearch }) {
-    const [search, setSearch] = useState("");
+// Controlled by the parent so it can be cleared along with the filters
+function SearchBar({ value, onChange, onSearch }) {
     function handleSubmit(e) {
         e.preventDefault();
-        if (!search.trim()) return;
-        onSearch(search);
+        onSearch(value);
     }
 
     return (
-        <form onSubmit={handleSubmit} className="search-container">
+        <form onSubmit={handleSubmit} className="search-container" role="search">
             <img src={searchIcon} alt="search" className="search-icon"/>
             <input
                 type="text"
                 placeholder="Search recipe name..."
-                value={search}
+                aria-label="Search recipe name"
+                value={value}
                 className="search-bar"
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => onChange(e.target.value)}
             />
+            {value && (
+                <button
+                    type="button"
+                    className="search-clear"
+                    aria-label="Clear search"
+                    onClick={() => {
+                        onChange("");
+                        onSearch("");
+                    }}
+                >
+                    ×
+                </button>
+            )}
         </form>
     );
 }

@@ -94,6 +94,71 @@
 .search-container {
     position: relative;
     width: 600px;
+    max-width: 100%;
+}
+
+.search-container .search-bar {
+    box-sizing: border-box;
+    padding-right: 48px;
+}
+
+.search-clear {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    color: #7f7c78;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.search-clear:hover {
+    background: #f0e6da;
+}
+
+/*Recipe filters*/
+
+.filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.filter-select {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 40px;
+    background-color: white;
+    font-size: 16px;
+    font-family: 'Inria Serif', serif;
+    color: #000;
+    cursor: pointer;
+}
+
+.clear-filters-btn {
+    background: none;
+    border: none;
+    padding: 12px 10px;
+    color: #465e5b;
+    font-size: 16px;
+    font-family: 'Inria Serif', serif;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    .filter-select {
+        flex: 1 1 140px;
+    }
 }
 
 /*RecipeCard*/
