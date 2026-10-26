@@ -6,8 +6,14 @@ import placeholderImage from "../assets/Rectangle 5.png";
 import { getRecipeById, parseListString, parseTags } from "../services/recipeService.js";
 import '../styles/globals.css'
 
+// Keyed by the recipe ID, so moving straight from one recipe to another (e.g. browser back/forward)
+// starts fresh: no previous recipe shown while loading, no stale Made status or heart errors
 function RecipeDetails() {
     const { id } = useParams();
+    return <RecipeDetailsView key={id} id={id} />;
+}
+
+function RecipeDetailsView({ id }) {
     const recipeId = Number(id);
     const [recipe, setRecipe] = useState(null);
     const [loading, setLoading] = useState(true);

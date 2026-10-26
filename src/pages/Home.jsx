@@ -145,11 +145,14 @@ function Home() {
             <section className="results-section" ref={resultsRef} aria-labelledby="results-title">
                 <div className="results-header">
                     <h2 id="results-title">{isFiltering ? "Search results" : "All recipes"}</h2>
-                    <span className="count-badge" aria-live="polite">
-                        {total != null && !loading
-                            ? `${total.toLocaleString()} ${total === 1 ? "recipe" : "recipes"}`
-                            : "…"}
-                    </span>
+                    {/* Hidden when loading failed, so it doesn't sit on "…" forever */}
+                    {!error && (
+                        <span className="count-badge" aria-live="polite">
+                            {total != null && !loading
+                                ? `${total.toLocaleString()} ${total === 1 ? "recipe" : "recipes"}`
+                                : "…"}
+                        </span>
+                    )}
                     <RecipeFilters
                         cuisine={filters.cuisine}
                         tag={filters.tag}

@@ -4,6 +4,8 @@ import { getSavedRecipeIds, saveRecipe, unsaveRecipe } from "../services/savedRe
 
 const SavedRecipesContext = createContext(null);
 const EMPTY = new Set();
+const MAX_RETRIES = 3;
+const RETRY_DELAY_MS = 3000;
 
 // Shares which recipes the signed-in user has saved, so every heart on every page agrees
 export function SavedRecipesProvider({ children }) {
@@ -13,10 +15,14 @@ export function SavedRecipesProvider({ children }) {
     // Remember whose IDs these are, so a different user never sees the previous user's saves
     const [loaded, setLoaded] = useState({ userId: null, ids: EMPTY });
     const [pending, setPending] = useState(EMPTY);
+    // Failed loads are retried a few times, a little later each time (counted per user)
+    const [retries, setRetries] = useState({ userId: null, count: 0 });
+    const attempt = retries.userId === userId ? retries.count : 0;
 
     useEffect(() => {
         if (!userId) return;
         let ignore = false;
+        let retryTimer;
 
         getSavedRecipeIds()
             .then((ids) => {
@@ -24,13 +30,17 @@ export function SavedRecipesProvider({ children }) {
             })
             .catch((err) => {
                 console.error("Couldn't load saved recipes:", err);
-                if (!ignore) setLoaded({ userId, ids: EMPTY });
+                // Not "nothing saved": stay not-ready so hearts are disabled and counts show "–"
+                if (!ignore && attempt < MAX_RETRIES) {
+                    retryTimer = setTimeout(() => setRetries({ userId, count: attempt + 1 }), RETRY_DELAY_MS * (attempt + 1));
+                }
             });
 
         return () => {
             ignore = true;
+            clearTimeout(retryTimer);
         };
-    }, [userId]);
+    }, [userId, attempt]);
 
     const ready = userId !== null && loaded.userId === userId;
     const savedIds = ready ? loaded.ids : EMPTY;
