@@ -8,28 +8,31 @@ import Saved from "../pages/SavedRecipes.jsx";
 import Profile from "../pages/Profile";
 import Layout from "../components/Layout";
 import { AuthProvider } from "../context/AuthContext";
+import { SavedRecipesProvider } from "../context/SavedRecipesContext";
 import { ProtectedRoute, PublicOnlyRoute } from "./ProtectedRoute";
 
 export default function AppRouter() {
     return (
         <AuthProvider>
-            <BrowserRouter>
-                <Routes>
-                    <Route element={<PublicOnlyRoute />}>
-                        <Route path="/" element={<Login />} />
-                        <Route path="/signup" element={<Signup />} />
-                    </Route>
-
-                    <Route element={<ProtectedRoute />}>
-                        <Route element={<Layout />}>
-                            <Route path="/home" element={<Home />} />
-                            <Route path="/recipes/:id" element={<RecipeDetails />} />
-                            <Route path="/saved" element={<Saved />} />
-                            <Route path="/profile" element={<Profile />} />
+            <SavedRecipesProvider>
+                <BrowserRouter>
+                    <Routes>
+                        <Route element={<PublicOnlyRoute />}>
+                            <Route path="/" element={<Login />} />
+                            <Route path="/signup" element={<Signup />} />
                         </Route>
-                    </Route>
-                </Routes>
-            </BrowserRouter>
+
+                        <Route element={<ProtectedRoute />}>
+                            <Route element={<Layout />}>
+                                <Route path="/home" element={<Home />} />
+                                <Route path="/recipes/:id" element={<RecipeDetails />} />
+                                <Route path="/saved" element={<Saved />} />
+                                <Route path="/profile" element={<Profile />} />
+                            </Route>
+                        </Route>
+                    </Routes>
+                </BrowserRouter>
+            </SavedRecipesProvider>
         </AuthProvider>
     )
 }

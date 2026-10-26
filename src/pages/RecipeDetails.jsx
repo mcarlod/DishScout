@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import HeartButton from "../components/HeartButton.jsx";
 import placeholderImage from "../assets/Rectangle 5.png";
 import { getRecipeById, parseListString, parseTags } from "../services/recipeService.js";
 import '../styles/globals.css'
@@ -57,6 +58,7 @@ function RecipeDetails() {
                     className="recipe-image"
                     onError={(e) => { e.currentTarget.src = placeholderImage; }}
                 />
+                <HeartButton recipeId={recipe.id} />
             </div>
 
             <h1>{recipe.recipe_name}</h1>

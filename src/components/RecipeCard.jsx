@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "../styles/components.css"
-import heart from "../assets/Heart.png"
 import placeholderImage from "../assets/Rectangle 5.png"
+import HeartButton from "./HeartButton.jsx";
 
 const RecipeCard = ({ recipeId, image, recipeName, country, prepTime, servings }) => {
     return (
@@ -15,9 +15,7 @@ const RecipeCard = ({ recipeId, image, recipeName, country, prepTime, servings }
                     onError={(e) => { e.currentTarget.src = placeholderImage; }}
                 />
 
-                <button className="save-button">
-                    <img src={heart} alt="heart-icon" className="heart-icon" />
-                </button>
+                <HeartButton recipeId={recipeId} />
             </div>
 
             <div className="recipe-info">

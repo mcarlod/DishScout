@@ -294,6 +294,22 @@ main {
     opacity: 0.85;
 }
 
+/*Saved Recipes empty state*/
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.empty-state h2 {
+    color: #000;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    color: #7f7c78;
+}
+
 /*Recipe Details*/
 
 .recipe-details {

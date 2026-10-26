@@ -121,9 +121,54 @@
     transform: scale(1.08);
 }
 
+/* Sits above the card's stretched link; the invisible ring makes a 48px tap target */
+.save-button {
+    z-index: 2;
+}
+
+.save-button::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+}
+
+.save-button:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
+.save-button:focus-visible {
+    outline: 2px solid #465e5b;
+    outline-offset: 2px;
+}
+
 .heart-icon{
     height: 25px;
     width: 25px;
+    fill: none;
+    stroke: #000;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: fill 0.15s ease, stroke 0.15s ease;
+}
+
+.save-button.saved .heart-icon {
+    fill: #e53935;
+    stroke: #e53935;
+}
+
+.save-error {
+    position: absolute;
+    top: 60px;
+    right: 12px;
+    z-index: 2;
+    max-width: 180px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #fdecea;
+    color: #a12b1f;
+    font-size: 13px;
 }
 
 .recipe-card {
