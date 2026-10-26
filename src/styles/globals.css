@@ -39,6 +39,7 @@ main {
 .login-banner {
     background-color: #465e5b;
     flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     padding: 40px;
@@ -72,7 +73,8 @@ main {
 }
 
 .banner-content h1 {
-    font-size: 56px;
+    /* 56px on large screens, scaling down so narrower split layouts aren't cramped */
+    font-size: clamp(36px, 3.9vw, 56px);
     line-height: 1.1;
     margin-bottom: 20px;
 }
@@ -86,10 +88,12 @@ main {
 .login-form-container {
     background-color: #f0e6da;
     flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0 100px;
+    /* 100px on large screens, less on narrower ones */
+    padding: 0 clamp(24px, 7vw, 100px);
     position: relative;
 }
 
@@ -157,6 +161,77 @@ main {
 .auth-message {
     background-color: #e8f0ef;
     color: #465e5b;
+}
+
+/* Phones and small tablets: compact brand header on top, full-width form below */
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+    }
+
+    .login-banner {
+        flex: none;
+        min-height: auto;
+        padding: 24px var(--page-gutter) 28px;
+    }
+
+    .login-banner .logo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .login-banner h2 {
+        font-size: 26px;
+    }
+
+    .banner-content {
+        margin: 24px 0 0;
+    }
+
+    .banner-content h1 {
+        font-size: clamp(28px, 8vw, 40px);
+        margin: 0 0 8px;
+    }
+
+    .banner-content p {
+        font-size: 17px;
+        margin: 0;
+    }
+
+    .login-form-container {
+        flex: 1;
+        justify-content: flex-start;
+        padding: 32px var(--page-gutter) 40px;
+    }
+
+    .login-form-container h1 {
+        font-size: 32px;
+        margin: 0 0 8px;
+    }
+
+    .login-form-container p {
+        font-size: 16px;
+        margin-bottom: 28px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-size: 17px;
+        margin-bottom: 8px;
+    }
+
+    .form-group input {
+        min-height: 48px;
+        box-sizing: border-box;
+    }
+
+    .sign-in-btn {
+        width: 100%;
+        min-height: 48px;
+    }
 }
 
 .signup-link {
