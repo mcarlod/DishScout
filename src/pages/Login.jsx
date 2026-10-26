@@ -67,7 +67,7 @@ function Login() {
                     </div>
                     {error && <div className="auth-error" role="alert">{error}</div>}
                     <button type="submit" className="sign-in-btn" disabled={submitting}>
-                        {submitting ? "Signing in..." : "Sign in"}
+                        {submitting ? "Signing in…" : "Sign in"}
                     </button>
                 </form>
 

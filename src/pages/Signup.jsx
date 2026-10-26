@@ -90,7 +90,7 @@ function Signup() {
                     {error && <div className="auth-error" role="alert">{error}</div>}
                     {message && <div className="auth-message" role="status">{message}</div>}
                     <button type="submit" className="sign-in-btn" disabled={submitting}>
-                        {submitting ? "Creating account..." : "Create account"}
+                        {submitting ? "Creating account…" : "Create account"}
                     </button>
                 </form>
 

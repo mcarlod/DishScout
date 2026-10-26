@@ -29,7 +29,6 @@
     --color-on-brand: #FFFFFF;
     --color-nav-bg: rgba(250, 246, 240, 0.96);
     --color-text: var(--color-ink);
-    --color-text-muted: var(--color-muted);
 
     /* Typography */
     --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;

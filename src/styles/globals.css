@@ -34,7 +34,7 @@ h2 {
     margin-bottom: 20px;
 }
 
-/* Used as a subtitle under page headings */
+/* Base h3 (body font, no letter-spacing); recipe card titles build on it via .recipe-title */
 h3 {
     font-family: var(--font-body);
     font-size: var(--text-lg);
@@ -291,20 +291,6 @@ main {
     text-decoration: none;
     font-style: italic;
     font-weight: bold;
-}
-
-.demo-guest-btn {
-    position: absolute;
-    bottom: 40px;
-    right: 40px;
-    background-color: var(--color-forest);
-    color: var(--color-on-brand);
-    padding: 12px 25px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-family: var(--font-body);
-    cursor: pointer;
 }
 
 /* Cards fill each row evenly: 1 column on phones, up to 4 on wide screens */

@@ -1,6 +1,6 @@
 import { supabase } from "./supabase.js";
 
-export const RECIPES_PAGE_SIZE = 12;
+const RECIPES_PAGE_SIZE = 12;
 
 // Only the columns the recipe cards need
 export const CARD_COLUMNS = "id, recipe_name, cuisine, image, prep_time_minutes, servings";
