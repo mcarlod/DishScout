@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import HeartButton from "../components/HeartButton.jsx";
+import MadeButton from "../components/MadeButton.jsx";
 import placeholderImage from "../assets/Rectangle 5.png";
 import { getRecipeById, parseListString, parseTags } from "../services/recipeService.js";
 import '../styles/globals.css'
@@ -73,6 +74,8 @@ function RecipeDetails() {
                     {tags.map((tag) => <li key={tag}>{tag}</li>)}
                 </ul>
             )}
+
+            <MadeButton recipeId={recipe.id} />
 
             <div className="recipe-details-sections">
                 <section className="recipe-details-panel">

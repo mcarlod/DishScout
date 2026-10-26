@@ -122,6 +122,60 @@
     background: #f0e6da;
 }
 
+/*Made button (recipe details)*/
+
+.made-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.made-button {
+    min-height: 44px;
+    padding: 12px 30px;
+    border: 2px solid #465e5b;
+    border-radius: 40px;
+    background-color: #465e5b;
+    color: white;
+    font-size: 16px;
+    font-family: 'Inria Serif', serif;
+    cursor: pointer;
+}
+
+.made-button.made {
+    background-color: #fff;
+    color: #465e5b;
+    font-weight: bold;
+}
+
+.made-button:disabled,
+.made-undo:disabled {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+.made-undo {
+    min-height: 44px;
+    background: none;
+    border: none;
+    padding: 0 10px;
+    color: #465e5b;
+    font-size: 16px;
+    font-family: 'Inria Serif', serif;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.made-error {
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #fdecea;
+    color: #a12b1f;
+    font-size: 14px;
+}
+
 /*Recipe filters*/
 
 .filter-row {

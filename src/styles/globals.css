@@ -262,8 +262,25 @@ main {
 
 .recently-made {
     background: #fff;
-    height: 300px;
+    min-height: 300px;
     border-radius: 40px;
+    /* Made recipes scroll sideways in a single row */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 0 10px;
+}
+
+.recently-made .recipe-card {
+    flex-shrink: 0;
+    border: 1px solid #f0e6da;
+}
+
+.recently-made .empty-state,
+.recently-made-status {
+    margin: 0 auto;
+    color: #7f7c78;
 }
 .recipes-status {
     display: flex;
