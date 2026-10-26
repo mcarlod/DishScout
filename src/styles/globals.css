@@ -27,7 +27,7 @@ h3 {
 }
 
 main {
-    padding: 20px 40px;
+    padding: 20px var(--page-gutter);
 }
 
 .login-container {
@@ -310,6 +310,101 @@ main {
     padding: 10px;
 }
 
+/* Long names or an email fallback wrap instead of overflowing the card */
+.profile-info h1 {
+    overflow-wrap: anywhere;
+}
+
+/* Tablet: stats move under the profile card as a row of three */
+@media (max-width: 900px) {
+    .profile-overview-row {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .profile-card {
+        width: auto;
+    }
+
+    .stats-column {
+        margin-left: 0;
+        width: auto;
+        flex-direction: row;
+        gap: 12px;
+    }
+
+    .stats-column > * {
+        flex: 1 1 0;
+        min-width: 0;
+        text-align: center;
+    }
+}
+
+/* Phone: profile card stacks vertically and the stats shrink to fit three across */
+@media (max-width: 600px) {
+    .profile-card {
+        flex-direction: column;
+        gap: 16px;
+        padding: 24px 16px;
+        border-radius: 28px;
+        text-align: center;
+    }
+
+    .profile-image {
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile-info {
+        margin-top: 0;
+        width: 100%;
+    }
+
+    .profile-info h1 {
+        font-size: 30px;
+        margin: 0;
+    }
+
+    .profile-name-row,
+    .profile-photo-actions,
+    .date-row {
+        justify-content: center;
+    }
+
+    .profile-name-row {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .profile-name-form {
+        justify-content: center;
+        margin: 0 0 10px;
+    }
+
+    .profile-name-form input {
+        flex: 1 1 100%;
+    }
+
+    .stats-column {
+        gap: 8px;
+    }
+
+    .stats-column > * {
+        padding: 12px 6px;
+        border-radius: 24px;
+    }
+
+    .stats-column h1 {
+        font-size: 32px;
+        margin: 0;
+    }
+
+    .stats-column p {
+        font-size: 14px;
+        margin: 4px 0 0;
+    }
+}
+
 .recently-made {
     background: #fff;
     min-height: 300px;
@@ -325,6 +420,18 @@ main {
 .recently-made .recipe-card {
     flex-shrink: 0;
     border: 1px solid #f0e6da;
+}
+
+@media (max-width: 600px) {
+    .recipe-cards {
+        margin: 0;
+    }
+
+    /* In the sideways-scrolling panel, show most of one card with the next peeking in */
+    .recently-made .recipe-card {
+        width: min(300px, 80vw);
+        margin: 16px 8px;
+    }
 }
 
 .recently-made .empty-state,

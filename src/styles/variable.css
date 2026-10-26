@@ -1,0 +1,16 @@
+/* Shared design tokens. Imported once in main.jsx. */
+
+:root {
+    /* Colours */
+    --color-brand: #465e5b;
+    --color-on-brand: #e9ebeb;
+    --color-nav-bg: #fff8f0;
+    --color-text: #000;
+    --color-text-muted: #7f7c78;
+
+    /* Layout: page side padding grows from 16px on phones to 40px on large screens */
+    --page-gutter: clamp(16px, 4vw, 40px);
+
+    /* Smallest comfortable size for anything tappable */
+    --tap-target: 44px;
+}

@@ -1,10 +1,13 @@
 /*Navbar*/
 
 .navbar {
-    background-color: #fff8f0;
+    background-color: var(--color-nav-bg);
     display: flex;
     align-items: center;
-    padding: 15px 40px;
+    padding: 15px var(--page-gutter);
+    /* Anchors the mobile dropdown and keeps it above page content */
+    position: relative;
+    z-index: 50;
 }
 
 .logo-container {
@@ -62,9 +65,112 @@
 }
 
 .nav-pages .nav-link.active {
-    color: #e9ebeb;
-    background: #465e5b;
+    color: var(--color-on-brand);
+    background: var(--color-brand);
     opacity: 1;
+}
+
+.nav-pages .nav-link:focus-visible,
+.nav-pages .logout-btn:focus-visible,
+.menu-toggle:focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+}
+
+/* Desktop shows the logout icon only; the text label appears in the mobile menu */
+.logout-label {
+    display: none;
+}
+
+.menu-toggle {
+    display: none;
+}
+
+/* Mobile navigation: logo + menu button, links in a dropdown */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px var(--page-gutter);
+    }
+
+    .navbar .logo {
+        width: 32px;
+        height: 32px;
+    }
+
+    .navbar .logo-container h2 {
+        font-size: 24px;
+    }
+
+    .menu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+        width: var(--tap-target);
+        height: var(--tap-target);
+        padding: 0;
+        border: none;
+        border-radius: 12px;
+        background: none;
+        color: var(--color-text);
+        cursor: pointer;
+    }
+
+    .menu-toggle[aria-expanded="true"] {
+        background: var(--color-brand);
+        color: var(--color-on-brand);
+    }
+
+    .menu-toggle-icon {
+        width: 26px;
+        height: 26px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+    }
+
+    .nav-pages {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: var(--page-gutter);
+        width: min(260px, calc(100vw - 2 * var(--page-gutter)));
+        box-sizing: border-box;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+        padding: 8px;
+        margin: 0;
+        background: var(--color-nav-bg);
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-pages.open {
+        display: flex;
+    }
+
+    .nav-pages .nav-link,
+    .nav-pages .logout-btn {
+        justify-content: flex-start;
+        gap: 10px;
+        min-height: var(--tap-target);
+        padding: 10px 16px;
+        border-radius: 12px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .nav-pages .logout-btn {
+        border-top: 1px solid #f0e6da;
+        border-radius: 0 0 12px 12px;
+        margin-top: 4px;
+    }
+
+    .logout-label {
+        display: inline;
+    }
 }
 
 /*SearchBar*/
@@ -187,14 +293,23 @@
 }
 
 .filter-select {
-    padding: 12px 20px;
+    /* Replace the browser's arrow (which ignores padding) with our own, inset from the edge */
+    appearance: none;
+    -webkit-appearance: none;
+    min-height: var(--tap-target);
+    padding: 12px 46px 12px 20px;
     border: none;
     border-radius: 40px;
-    background-color: white;
+    background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23465e5b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 18px center / 16px;
     font-size: 16px;
     font-family: 'Inria Serif', serif;
     color: #000;
     cursor: pointer;
+}
+
+.filter-select:focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
 }
 
 .clear-filters-btn {
@@ -294,7 +409,10 @@
     position: relative;
     margin: 20px;
     width: 350px;
-    height: 270px;
+    /* Grows if a long name needs two lines, so the details below are never cut off */
+    min-height: 270px;
+    display: flex;
+    flex-direction: column;
     background-color: #fff;
     border-radius: 20px;
     overflow: hidden;
@@ -302,6 +420,7 @@
 
 .recipe-image-wrapper {
     position: relative;
+    flex-shrink: 0;
     height: 200px;
     border-radius: 20px;
     overflow: hidden;
@@ -316,8 +435,16 @@
 .recipe-title {
     margin: 10px 0 5px;
     font-size: 20px;
+    line-height: 1.25;
     font-weight: bold;
     font-family: 'Inria Serif', serif;
+    /* Long names stop at two lines with "…"; the full name is on the details page */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    overflow-wrap: anywhere;
 }
 
 .recipe-card-link {
@@ -347,12 +474,13 @@
 }
 
 .recipe-info {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 0 12px 14px;
 }
 
 .recipe-info-text {
     display: flex;
+    flex-wrap: wrap;
+    row-gap: 4px;
     align-items: center;
     gap: 10px;
 
@@ -365,4 +493,12 @@
     display: flex;
     align-items: center;
     gap: 5px;
+}
+
+/* Cards fill the width on phones instead of a fixed 350px (kept after the base card rules so it wins) */
+@media (max-width: 600px) {
+    .recipe-card {
+        margin: 0;
+        width: 100%;
+    }
 }

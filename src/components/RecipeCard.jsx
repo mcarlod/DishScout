@@ -21,7 +21,7 @@ const RecipeCard = ({ recipeId, image, recipeName, country, prepTime, servings }
             <div className="recipe-info">
                 <h3 className="recipe-title">
                     {/* The link stretches over the whole card; the heart sits above it */}
-                    <Link to={`/recipes/${recipeId}`} className="recipe-card-link">{recipeName}</Link>
+                    <Link to={`/recipes/${recipeId}`} className="recipe-card-link" title={recipeName}>{recipeName}</Link>
                 </h3>
                 <div className="recipe-info-text">
                     {country && <span>{country}</span>}
