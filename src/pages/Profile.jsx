@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import photo from '../assets/12.png';
-import calendar from '../assets/Calendar.png';
+import { Link } from 'react-router-dom';
 import '../styles/globals.css';
 import { useAuth } from '../context/AuthContext';
 import { useSavedRecipes } from '../context/SavedRecipesContext';
@@ -19,7 +18,9 @@ import {
 function Profile() {
     const { user } = useAuth();
     const { ready: savedReady, savedCount } = useSavedRecipes();
-    const joined = user ? new Date(user.created_at).toLocaleDateString() : "";
+    const joined = user
+        ? new Date(user.created_at).toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" })
+        : "";
 
     const [profile, setProfile] = useState(null);
     const [profileError, setProfileError] = useState("");
@@ -67,6 +68,9 @@ function Profile() {
 
     const name = profile?.name || user?.user_metadata?.full_name || user?.email;
     const avatarUrl = getAvatarUrl(profile?.profile_image);
+    // Shown in place of a photo, e.g. "Jane Doe" -> "JD"
+    const initials = (name || "").split(/\s+/).filter(Boolean).slice(0, 2)
+        .map((word) => word[0].toUpperCase()).join("") || "?";
 
     // Each distinct cuisine across made recipes counts once, e.g. "['American', 'Mexican']" adds two
     const cuisinesExplored = new Set(made.flatMap((recipe) => parseListString(recipe.cuisine))).size;
@@ -125,141 +129,172 @@ function Profile() {
 
     return(
         <>
-            <h1>Your Profile</h1>
-
-            {/*profile row with profile statistics*/}
-            <div className="profile-overview-row">
-
-                {/*profile personal information card*/}
-                <div className="profile-card">
-                    <div className="profile-photo">
-                        <img src={avatarUrl || photo} alt="" className="profile-image" />
-                        <div className="profile-photo-actions">
-                            <button
-                                type="button"
-                                className="profile-link-btn"
-                                onClick={() => fileInput.current?.click()}
-                                disabled={photoBusy || !profile}
-                            >
-                                {photoBusy ? "Saving…" : avatarUrl ? "Change photo" : "Upload photo"}
-                            </button>
-                            {avatarUrl && (
-                                <button
-                                    type="button"
-                                    className="profile-link-btn"
-                                    onClick={handleRemovePhoto}
-                                    disabled={photoBusy}
-                                >
-                                    Remove
-                                </button>
-                            )}
-                            <input
-                                ref={fileInput}
-                                type="file"
-                                accept="image/jpeg,image/png,image/webp,image/gif"
-                                hidden
-                                onChange={handlePhotoChosen}
-                            />
-                        </div>
+            {/*profile header panel*/}
+            <section className="profile-hero" aria-label="Your profile">
+                <div className="profile-avatar-block">
+                    <div className="profile-avatar">
+                        {avatarUrl
+                            ? <img src={avatarUrl} alt="Your profile photo" className="profile-image" />
+                            : <span className="profile-initials" aria-hidden="true">{initials}</span>}
+                        <button
+                            type="button"
+                            className="profile-photo-btn"
+                            aria-label={avatarUrl ? "Change profile photo" : "Upload profile photo"}
+                            title={avatarUrl ? "Change photo" : "Upload photo"}
+                            onClick={() => fileInput.current?.click()}
+                            disabled={photoBusy || !profile}
+                        >
+                            {photoBusy
+                                ? <span className="profile-photo-spinner" aria-hidden="true" />
+                                : (
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M4 8h3l2-3h6l2 3h3v11H4z" />
+                                        <circle cx="12" cy="13" r="3.5" />
+                                    </svg>
+                                )}
+                        </button>
                     </div>
+                    {avatarUrl && (
+                        <button
+                            type="button"
+                            className="profile-text-btn"
+                            onClick={handleRemovePhoto}
+                            disabled={photoBusy}
+                        >
+                            Remove photo
+                        </button>
+                    )}
+                    <span className="profile-photo-hint">JPG, PNG, WebP or GIF · max 2 MB</span>
+                    <input
+                        ref={fileInput}
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp,image/gif"
+                        hidden
+                        onChange={handlePhotoChosen}
+                    />
+                </div>
 
-                    <div className="profile-info">
-                        {editingName ? (
-                            <form className="profile-name-form" onSubmit={saveName}>
-                                <input
-                                    type="text"
-                                    value={nameDraft}
-                                    onChange={(e) => setNameDraft(e.target.value)}
-                                    maxLength={NAME_MAX_LENGTH}
-                                    aria-label="Display name"
-                                    autoFocus
-                                    required
-                                />
-                                <button type="submit" className="recipes-button" disabled={nameBusy}>
+                <div className="profile-details">
+                    <p className="profile-eyebrow">Your profile</p>
+                    {editingName ? (
+                        <form className="profile-name-form" onSubmit={saveName}>
+                            <label className="profile-name-label" htmlFor="display-name">Display name</label>
+                            <input
+                                id="display-name"
+                                type="text"
+                                value={nameDraft}
+                                onChange={(e) => setNameDraft(e.target.value)}
+                                maxLength={NAME_MAX_LENGTH}
+                                autoFocus
+                                required
+                            />
+                            <div className="profile-name-actions">
+                                <button type="submit" className="profile-save-btn" disabled={nameBusy}>
                                     {nameBusy ? "Saving…" : "Save"}
                                 </button>
                                 <button
                                     type="button"
-                                    className="profile-link-btn"
+                                    className="profile-cancel-btn"
                                     onClick={() => setEditingName(false)}
                                     disabled={nameBusy}
                                 >
                                     Cancel
                                 </button>
-                            </form>
-                        ) : (
-                            <div className="profile-name-row">
-                                <h1>{name}</h1>
-                                <button
-                                    type="button"
-                                    className="profile-link-btn"
-                                    onClick={startEditingName}
-                                    disabled={!profile}
-                                >
-                                    Edit name
-                                </button>
                             </div>
-                        )}
-                        <div className="date-row">
-                            <img className="calendar-icon" src={calendar} alt=""/>
-                            <p>Joined on: {joined}</p>
+                        </form>
+                    ) : (
+                        <div className="profile-name-row">
+                            <h1>{name}</h1>
+                            <button
+                                type="button"
+                                className="profile-edit-btn"
+                                aria-label="Edit name"
+                                title="Edit name"
+                                onClick={startEditingName}
+                                disabled={!profile}
+                            >
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M4 20h4L19 9l-4-4L4 16z" />
+                                    <path d="M14 6l4 4" />
+                                </svg>
+                            </button>
                         </div>
-                        {(actionError || profileError) && (
-                            <div className="auth-error" role="alert">{actionError || profileError}</div>
-                        )}
-                    </div>
+                    )}
+                    {joined && (
+                        <p className="profile-joined">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <rect x="3" y="5" width="18" height="16" rx="2" />
+                                <path d="M3 10h18M8 3v4M16 3v4" />
+                            </svg>
+                            Joined {joined}
+                        </p>
+                    )}
+                    {(actionError || profileError) && (
+                        <div className="auth-error" role="alert">{actionError || profileError}</div>
+                    )}
+                </div>
+            </section>
+
+            {/*statistics, overlapping the bottom of the header panel*/}
+            <section className="stats-row" aria-label="Your cooking stats">
+                <div className="stat-tile stat-made">
+                    <span className="stat-number">{madeStatsReady ? made.length : "–"}</span>
+                    <span className="stat-label">Recipes made</span>
+                </div>
+                <div className="stat-tile stat-saved">
+                    <span className="stat-number">{savedReady ? savedCount : "–"}</span>
+                    <span className="stat-label">Saved recipes</span>
+                </div>
+                <div className="stat-tile stat-cuisines">
+                    <span className="stat-number">{madeStatsReady ? cuisinesExplored : "–"}</span>
+                    <span className="stat-label">Cuisines explored</span>
+                </div>
+            </section>
+
+            {/*recently made recipes, in the same grid as Home*/}
+            <section className="recent-section" aria-labelledby="recent-title">
+                <div className="results-header">
+                    <h2 id="recent-title">Recently made</h2>
+                    {madeStatsReady && (
+                        <span className="count-badge">{made.length} {made.length === 1 ? "recipe" : "recipes"}</span>
+                    )}
+                    <Link to="/home" className="recent-browse-link">Browse more recipes →</Link>
                 </div>
 
-                {/*column of statistics*/}
-                <div className="stats-column">
+                {loading && <p className="recipes-status">Loading made recipes…</p>}
 
-                    {/*recipes made card*/}
-                    <div className="recipe-made-card">
-                        <h1>{madeStatsReady ? made.length : "–"}</h1>
-                        <p>Recipes Made</p>
-                    </div>
-
-                    {/*saved recipes card*/}
-                    <div className="stat-card">
-                        <h1>{savedReady ? savedCount : "–"}</h1>
-                        <p>Saved Recipes</p>
-                    </div>
-
-                    {/*cuisines explored card*/}
-                    <div className="stat-card">
-                        <h1>{madeStatsReady ? cuisinesExplored : "–"}</h1>
-                        <p>Cuisines Explored</p>
-                    </div>
-
-                </div>
-            </div>
-
-            {/*recently made recipes*/}
-            <h2>Recently Made</h2>
-            <div className="recently-made">
-                {loading && <p className="recently-made-status">Loading made recipes…</p>}
-
-                {error && <p className="recently-made-status">Couldn't load made recipes: {error}</p>}
+                {error && <p className="recipes-status">Couldn't load made recipes: {error}</p>}
 
                 {!loading && !error && made.length === 0 && (
-                    <div className="empty-state">
+                    <div className="empty-state profile-empty">
                         <h2>No recipes made yet</h2>
                         <p>Tap "Mark as Made" on any recipe once you've cooked it.</p>
+                        <Link to="/home" className="recipes-button">Browse recipes</Link>
                     </div>
                 )}
 
-                {made.map((recipe) => (
-                    <RecipeCard
-                        key={recipe.id}
-                        recipeId={recipe.id}
-                        image={recipe.image}
-                        recipeName={recipe.recipe_name}
-                        country={parseListString(recipe.cuisine).join(", ")}
-                        prepTime={recipe.prep_time_minutes}
-                        servings={recipe.servings}
-                    />
-                ))}
-            </div>
+                {made.length > 0 && (
+                    <div className="recipe-cards">
+                        {made.map((recipe) => (
+                            <RecipeCard
+                                key={recipe.id}
+                                recipeId={recipe.id}
+                                image={recipe.image}
+                                recipeName={recipe.recipe_name}
+                                country={parseListString(recipe.cuisine).join(", ")}
+                                prepTime={recipe.prep_time_minutes}
+                                servings={recipe.servings}
+                                badge="Made"
+                            />
+                        ))}
+                        <Link to="/home" className="cook-new-tile">
+                            <span className="cook-new-plus" aria-hidden="true">+</span>
+                            <span className="cook-new-title">Cook something new</span>
+                            <span className="cook-new-text">Mark a recipe as made and it shows up here</span>
+                        </Link>
+                    </div>
+                )}
+            </section>
         </>
     )
 }

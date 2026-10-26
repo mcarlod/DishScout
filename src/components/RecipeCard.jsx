@@ -3,7 +3,7 @@ import "../styles/components.css"
 import placeholderImage from "../assets/Rectangle 5.png"
 import HeartButton from "./HeartButton.jsx";
 
-const RecipeCard = ({ recipeId, image, recipeName, country, prepTime, servings }) => {
+const RecipeCard = ({ recipeId, image, recipeName, country, prepTime, servings, badge }) => {
     return (
         <article className="recipe-card">
             <div className="recipe-image-wrapper">
@@ -14,6 +14,9 @@ const RecipeCard = ({ recipeId, image, recipeName, country, prepTime, servings }
                     loading="lazy"
                     onError={(e) => { e.currentTarget.src = placeholderImage; }}
                 />
+
+                {/* Optional label on the photo, e.g. "Made" on the Profile page */}
+                {badge && <span className="recipe-badge"><span aria-hidden="true">✓ </span>{badge}</span>}
 
                 <HeartButton recipeId={recipeId} />
             </div>

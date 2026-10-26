@@ -803,6 +803,20 @@
     transform: scale(1.04);
 }
 
+/* Optional label on the photo, e.g. "✓ Made" on the Profile page */
+.recipe-badge {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    z-index: 2;
+    padding: 5px 10px;
+    border-radius: var(--radius-pill);
+    background: var(--color-forest);
+    color: var(--color-on-brand);
+    font-size: 12px;
+    font-weight: 700;
+}
+
 .recipe-info {
     display: flex;
     flex-direction: column;
